@@ -83,6 +83,52 @@ public class TodosTest {
         Task[] actual = todos.search("родителям");
         Assertions.assertArrayEquals(expected, actual);
     }
+    @Test
+    public void shouldSearchifZoroTask() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+        String[] subtasks = {"молоко", "яйца", "хлеб"};
+        Epic epic = new Epic(55, subtasks);
+        Meeting meeting = new Meeting(555, "Выкатка 3-й версии приложения", "приложение Нетобанка", "во вторник после обеда");
+        Todos todos = new Todos();
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {};
+        Task[] actual = todos.search(meeting.getStart());
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void shouldSearchIfOneTask() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+        String[] subtasks = {"молоко", "яйца", "хлеб",};
+        Epic epic = new Epic(55, subtasks);
+        Meeting meeting = new Meeting(555, "Выкатка 3-й версии приложения", "приложение Нетобанка", "во вторник после обеда");
+        Todos todos = new Todos();
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {simpleTask};
+        Task[] actual = todos.search(simpleTask.getTitle());
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void shouldSearchIfFSeveralTask() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+        String[] subtasks = {"молоко", "яйца", "хлеб", "Позвонить родителям"};
+        Epic epic = new Epic(55, subtasks);
+        Meeting meeting = new Meeting(555, "Выкатка 3-й версии приложения", "приложение Нетобанка", "во вторник после обеда");
+        Todos todos = new Todos();
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {simpleTask, epic};
+        Task[] actual = todos.search("Позвонить");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
 
 
 }
